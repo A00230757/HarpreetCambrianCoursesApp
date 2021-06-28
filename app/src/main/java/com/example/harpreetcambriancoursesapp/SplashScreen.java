@@ -27,7 +27,7 @@ public class SplashScreen extends Activity {
                     e.printStackTrace();
                 }
 
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                startActivity(new Intent(getApplicationContext(),MainInterface.class));
             }
         }).start();
 
