@@ -1,6 +1,8 @@
 package com.example.harpreetcambriancoursesapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,7 +27,8 @@ public class MainInterface extends AppCompatActivity {
     }
     public void login(View v ) {
         if( v.getId() == R.id.imv1){
-            Toast.makeText(getApplicationContext(),"Admin Login",Toast.LENGTH_SHORT).show();
+            Intent in =new Intent(this,AddDepartmentActivity.class);
+            startActivity(in);
         }
         else if( v.getId() == R.id.imv2){
             Toast.makeText(getApplicationContext(),"Professor Login",Toast.LENGTH_SHORT).show();

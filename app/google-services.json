@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "391105265785",
+    "project_id": "harpreetcambriancoursesapp",
+    "storage_bucket": "harpreetcambriancoursesapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:391105265785:android:6be4ecc01f0648c8d294a8",
+        "android_client_info": {
+          "package_name": "com.example.harpreetcambriancoursesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "391105265785-r2looge22do0phb9hqcchs802t7f8otc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAS2JXcod43UWW7LJgQ2ENi-7kFbOtncrk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "391105265785-r2looge22do0phb9hqcchs802t7f8otc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
