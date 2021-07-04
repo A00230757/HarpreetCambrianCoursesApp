@@ -31,7 +31,8 @@ public class MainInterface extends AppCompatActivity {
             startActivity(in);
         }
         else if( v.getId() == R.id.imv2){
-            Toast.makeText(getApplicationContext(),"Professor Login",Toast.LENGTH_SHORT).show();
+            Intent in =new Intent(this,AddCoursesActivity.class);
+            startActivity(in);
         }
         else if( v.getId() == R.id.imv3){
             Toast.makeText(getApplicationContext(),"Student Login",Toast.LENGTH_SHORT).show();
