@@ -29,15 +29,20 @@ public class MainInterface extends AppCompatActivity {
         if( v.getId() == R.id.imv1){
             Intent in =new Intent(this,AddDepartmentActivity.class);
             startActivity(in);
+            Toast.makeText(getApplicationContext(),"Add Department",Toast.LENGTH_SHORT).show();
         }
         else if( v.getId() == R.id.imv2){
+            Toast.makeText(getApplicationContext(),"Add Course",Toast.LENGTH_SHORT).show();
             Intent in =new Intent(this,AddCoursesActivity.class);
             startActivity(in);
         }
         else if( v.getId() == R.id.imv3){
-            Toast.makeText(getApplicationContext(),"Student Login",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Add Professor",Toast.LENGTH_SHORT).show();
+            Intent in =new Intent(this,AddProfessorActivity.class);
+            startActivity(in);
         }
         else{}
+
     }
 }
 
