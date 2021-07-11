@@ -45,6 +45,6 @@
             android:layout_height="wrap_content"
             android:text="Delete"
             android:textStyle="bold"
-            android:id="@+id/btdeletecourse"/>
+            android:id="@+id/btdeleteprofessor"/>
     </LinearLayout>
 </LinearLayout>

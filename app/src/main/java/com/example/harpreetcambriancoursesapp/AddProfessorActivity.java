@@ -1,5 +1,6 @@
 package com.example.harpreetcambriancoursesapp;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
@@ -162,6 +163,7 @@ public class AddProfessorActivity extends AppCompatActivity {
                     }
 
                 }
+                Toast.makeText(getApplicationContext(),arraylist_professor.size()+"",Toast.LENGTH_SHORT).show();
                 mycustomadapter_professor.notifyDataSetChanged();
             }
             @Override
@@ -174,8 +176,8 @@ public class AddProfessorActivity extends AppCompatActivity {
     public boolean checkDuplicateEntry (String professoremail){
         boolean flag = true;
         for(int i=0; i<arraylist_professor.size(); i++) {
-            String single_professor_email = arraylist_professor.get(i).email;
-            if (single_professor_email.equals(professoremail)){
+            String single_professor_mobile = arraylist_professor.get(i).mobile;
+            if (single_professor_mobile.equals(professoremail)){
                 flag = false;
                 break;
             }
@@ -191,9 +193,8 @@ public class AddProfessorActivity extends AppCompatActivity {
     }
     public void gallery(View view)
     {
-        Intent in = new Intent(Intent.ACTION_GET_CONTENT);
-        in.setType("image/*");
-        startActivityForResult(in,91);
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent,91);
     }
 
     @Override
@@ -203,51 +204,35 @@ public class AddProfessorActivity extends AppCompatActivity {
         if(requestCode==90 && resultCode==RESULT_OK)
         {
             Bitmap bmp  = (Bitmap) data.getExtras().get("data");
-//Uri tempUri = getImageUri(getApplicationContext(), bmp);
-//            File finalFile = new File(getRealPathFromURI(tempUri));
-//            department_photopath =finalFile.getAbsolutePath().toString();
-//            edittext_imagepath.setText(department_photopath);
-//            edittext_imagepath.setEnabled(false);
-//            Log.d("MYMESSAGE",finalFile.getAbsolutePath().toString());
-            //imv1.setImageBitmap(bmp);
         }
         else if(requestCode==91 && resultCode==RESULT_OK)
         {
             Uri uri = data.getData();
-            try {
-                Bitmap bmp=MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
-                // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-                Uri tempUri = getImageUri(getApplicationContext(), bmp);
-                // CALL THIS METHOD TO GET THE ACTUAL PATH
-                File finalFile = new File(getRealPathFromURI(tempUri));
-                professor_photopath =finalFile.getAbsolutePath().toString();
-                edittext_imagepath.setText(professor_photopath);
-                edittext_imagepath.setEnabled(false);
-                Log.d("MYMESSAGE",finalFile.getAbsolutePath().toString());
-
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            Uri selectedImageUri = data.getData();
+            String selectedImagePath = getPath(getApplicationContext(),selectedImageUri);
+            System.out.println("Image Path : " + selectedImagePath);
+            professor_photopath =selectedImagePath;
+            edittext_imagepath.setText(professor_photopath);
+            edittext_imagepath.setEnabled(false);
+            Log.d("MYMESSAGE",selectedImagePath);
         }
     }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
+    public static String getPath( Context context, Uri uri ) {
+        String result = null;
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver( ).query( uri, proj, null, null, null );
+        if(cursor != null){
+            if ( cursor.moveToFirst( ) ) {
+                int column_index = cursor.getColumnIndexOrThrow( proj[0] );
+                result = cursor.getString( column_index );
+            }
+            cursor.close( );
+        }
+        if(result == null) {
+            result = "Not found";
+        }
+        return result;
     }
-
-    public String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
-    }
-
     public void add(View view)
     {
         String name_professor = edittext_professor_name.getText().toString();
@@ -269,12 +254,12 @@ public class AddProfessorActivity extends AppCompatActivity {
             professor professor_object = new professor(name_professor,email_professor,professor_photopath+"/"+name_professor,mobile_professor,selected_department);
             DatabaseReference professor_reference = professorref.child(mobile_professor);
             Log.d("MYMESSAGE",professor_reference.getKey());
-            if(checkDuplicateEntry(email_professor)) {
+            if(checkDuplicateEntry(mobile_professor)) {
                 professor_reference.setValue(professor_object);
                 uploadlogic(professor_photopath , name_professor);
             }
             else{
-                Toast.makeText(getApplicationContext(),"professor with same name in this department already exists",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"professor with same mobile number in this department already exists",Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -295,7 +280,7 @@ public class AddProfessorActivity extends AppCompatActivity {
                 edittext_mobile.setText("");
                 edittext_imagepath.setText("");
                 professor_photopath="";
-                fetchProfessorsFromFirebase(selected_department);
+                //fetchProfessorsFromFirebase(selected_department);
             }
         });
         myuploadtask.addOnFailureListener(new OnFailureListener() {
@@ -351,8 +336,8 @@ public class AddProfessorActivity extends AppCompatActivity {
             TextView texview_professor_name = (TextView) (convertView.findViewById(R.id.texview_professor_name));
             TextView texview_professor_email = (TextView) (convertView.findViewById(R.id.texview_professor_email));
             TextView texview_professor_mobile = (TextView) (convertView.findViewById(R.id.texview_professor_mobile));
-            Button btdelete =(Button)(convertView.findViewById(R.id.btdeletecourse));
-            ImageView imv1course =(ImageView) (convertView.findViewById(R.id.imv1course));
+            Button btdelete =(Button)(convertView.findViewById(R.id.btdeleteprofessor));
+            ImageView imv1professor =(ImageView) (convertView.findViewById(R.id.imv1professor));
 
             professor p = arraylist_professor.get(position);
             Log.d("TTHHGG",p.name+","+p.email+","+p.mobile);
@@ -368,7 +353,7 @@ public class AddProfessorActivity extends AppCompatActivity {
                 public void onSuccess(Uri downloadUrl)
                 {
                     //do something with downloadurl
-                    Picasso.with(AddProfessorActivity.this).load(downloadUrl).resize(200,200).into(imv1course);
+                    Picasso.with(AddProfessorActivity.this).load(downloadUrl).resize(200,200).into(imv1professor);
                 }
             });
 
@@ -378,7 +363,7 @@ public class AddProfessorActivity extends AppCompatActivity {
                     btdelete.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            professorref.child(p.name).addListenerForSingleValueEvent(new ValueEventListener() {
+                            professorref.child(p.mobile).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for (DataSnapshot singleSnapshot: dataSnapshot.getChildren()) {
@@ -397,7 +382,6 @@ public class AddProfessorActivity extends AppCompatActivity {
             }).start();
             return convertView;
         }
-
     }
 
 }

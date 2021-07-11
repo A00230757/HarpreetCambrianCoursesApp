@@ -121,11 +121,16 @@ public class AddDepartmentActivity extends AppCompatActivity {
         return flag;
     }
 
+
+    public void camera(View view)
+    {
+        Intent in  = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(in,90);
+    }
     public void gallery(View view)
     {
-        Intent in = new Intent(Intent.ACTION_GET_CONTENT);
-        in.setType("image/*");
-        startActivityForResult(in,91);
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent,91);
     }
 
     @Override
@@ -135,41 +140,33 @@ public class AddDepartmentActivity extends AppCompatActivity {
         if(requestCode==90 && resultCode==RESULT_OK)
         {
             Bitmap bmp  = (Bitmap) data.getExtras().get("data");
-
-            //imv1.setImageBitmap(bmp);
         }
-        else if(requestCode==91 && resultCode==RESULT_OK)
+        else if(resultCode==RESULT_OK)
         {
             Uri uri = data.getData();
-            try {
-                Bitmap bmp=MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
-                // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-                Uri tempUri = getImageUri(getApplicationContext(), bmp);
-                // CALL THIS METHOD TO GET THE ACTUAL PATH
-                File finalFile = new File(getRealPathFromURI(tempUri));
-                department_photopath =finalFile.getAbsolutePath().toString();
-                edittext_imagepath.setText(department_photopath);
-                edittext_imagepath.setEnabled(false);
-                Log.d("MYMESSAGE",finalFile.getAbsolutePath().toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            Uri selectedImageUri = data.getData();
+            String selectedImagePath = getPath(getApplicationContext(),selectedImageUri);
+            System.out.println("Image Path : " + selectedImagePath);
+            department_photopath =selectedImagePath;
+            edittext_imagepath.setText(department_photopath);
+            edittext_imagepath.setEnabled(false);
         }
     }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-    public String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
+    public static String getPath( Context context, Uri uri ) {
+        String result = null;
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver( ).query( uri, proj, null, null, null );
+        if(cursor != null){
+            if ( cursor.moveToFirst( ) ) {
+                int column_index = cursor.getColumnIndexOrThrow( proj[0] );
+                result = cursor.getString( column_index );
+            }
+            cursor.close( );
+        }
+        if(result == null) {
+            result = "Not found";
+        }
+        return result;
     }
 
     public void add(View view)
@@ -214,7 +211,7 @@ public class AddDepartmentActivity extends AppCompatActivity {
                 edittext_description.setText("");
                 edittext_imagepath.setText("");
                 department_photopath="";
-                fetchDepartmentsFromFirebase();
+                // fetchDepartmentsFromFirebase();
             }
         });
         myuploadtask.addOnFailureListener(new OnFailureListener() {
