@@ -47,11 +47,13 @@ public class AddCoursesActivity extends AppCompatActivity {
     myadapter mycustomadapter_courses;
 
     ListView listview_courses;
-    EditText edittext_course_name,edittext_description,edittext_imagepath;
+    EditText edittext_course_code,edittext_course_name,edittext_description,edittext_imagepath;
 
-    Spinner spinnerdepartment;
+    Spinner spinnerdepartment , spinnerprofessor;
     ArrayList<String> arraydepartments = new ArrayList<>();
     ArrayAdapter<String> adapter_departments ;
+    ArrayList<String> arrayprofessors = new ArrayList<>();
+    ArrayAdapter<String> adapter_professor;
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference mainrefcourse;
@@ -61,12 +63,14 @@ public class AddCoursesActivity extends AppCompatActivity {
 
     String course_photopath="/storage/emulated/0/Pictures/Title (30).jpg/d1";
     String selected_department="";
+    String selected_professor="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_courses);
 
         listview_courses = (ListView) (findViewById(R.id.listview_courses));
+        edittext_course_code = (EditText) (findViewById(R.id.edittext_course_code));
         edittext_course_name = (EditText) (findViewById(R.id.edittext_course_name));
         edittext_description = (EditText) (findViewById(R.id.edittext_description));
         edittext_imagepath = (EditText) (findViewById(R.id.edittext_imagepath));
@@ -74,6 +78,9 @@ public class AddCoursesActivity extends AppCompatActivity {
         spinnerdepartment = (Spinner) (findViewById(R.id.spinnerdepartment));
         adapter_departments = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arraydepartments);
         spinnerdepartment.setAdapter(adapter_departments);
+        spinnerprofessor = (Spinner) (findViewById(R.id.spinnerprofessor));
+        adapter_professor = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayprofessors);
+        spinnerprofessor.setAdapter(adapter_professor);
 
 
 
@@ -92,7 +99,12 @@ public class AddCoursesActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selected_department = arraydepartments.get(position);
-                fetchCoursesFromFirebase(selected_department);
+                if(!selected_department.equals("")){
+                    arraylist_courses.clear();
+                    mycustomadapter_courses.notifyDataSetChanged();
+                    fetchProfessorsFromFirebase();
+                }
+                //fetchProfessorsFromFirebase();
                 Toast.makeText(getApplicationContext(),selected_department,Toast.LENGTH_SHORT).show();
 
             }
@@ -102,6 +114,23 @@ public class AddCoursesActivity extends AppCompatActivity {
 
             }
         });
+
+        spinnerprofessor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selected_professor = arrayprofessors.get(position);
+                fetchCoursesFromFirebase(selected_department,selected_professor);
+                Toast.makeText(getApplicationContext(),selected_professor,Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
 
         listview_courses.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -134,6 +163,8 @@ public class AddCoursesActivity extends AppCompatActivity {
                     arraydepartments.add(depttemp.name);
                 }
                 adapter_departments.notifyDataSetChanged();
+                //fetchProfessorsFromFirebase();
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -142,7 +173,41 @@ public class AddCoursesActivity extends AppCompatActivity {
         });
     }
 
-    public void fetchCoursesFromFirebase(String department_selected){
+    public void fetchProfessorsFromFirebase(){
+        arrayprofessors.clear();
+        DatabaseReference mainrefprofessor;
+        DatabaseReference professorref;
+        mainrefprofessor = firebaseDatabase.getReference();
+        professorref =mainrefprofessor.child("professors");
+        professorref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                arrayprofessors.clear();
+                //Log.d("MYESSAGE",dataSnapshot.toString());
+                for(DataSnapshot  singlesnapshot : dataSnapshot.getChildren())
+                {
+                    professor proftemp = singlesnapshot.getValue(professor.class);
+                    try {
+                        Log.d("MYESSAGE",singlesnapshot.getValue(professor.class).name);
+                    }
+                    catch (Exception ex){
+                        ex.printStackTrace();
+                    }
+                    if (proftemp.under_dept.equals(selected_department)){
+                        arrayprofessors.add(proftemp.name);
+                    }
+                }
+                adapter_professor.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    public void fetchCoursesFromFirebase(String department_selected ,String professor_selected){
         arraylist_courses.clear();
         courseref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -153,7 +218,7 @@ public class AddCoursesActivity extends AppCompatActivity {
                 {
                     course coursetemp = singlesnapshot.getValue(course.class);
                     try {
-                        if(coursetemp.under_dept.equals(department_selected)){
+                        if(coursetemp.under_dept.equals(department_selected)&& coursetemp.professor.equals(selected_professor)){
                             arraylist_courses.add(coursetemp);
                         }
                     }
@@ -171,11 +236,11 @@ public class AddCoursesActivity extends AppCompatActivity {
         });
     }
 
-    public boolean checkDuplicateEntry (String coursename){
+    public boolean checkDuplicateEntry (String coursecode){
         boolean flag = true;
         for(int i=0; i<arraylist_courses.size(); i++) {
-            String single_course_name = arraylist_courses.get(i).name;
-            if (single_course_name.equals(coursename)){
+            String single_course_code = arraylist_courses.get(i).coursecode;
+            if (single_course_code.equals(coursecode)){
                 flag = false;
                 break;
             }
@@ -237,8 +302,12 @@ public class AddCoursesActivity extends AppCompatActivity {
     public void add(View view)
     {
         String name_course = edittext_course_name.getText().toString();
+        String code_course = edittext_course_name.getText().toString();
         String description_course = edittext_description.getText().toString();
-        if (name_course.isEmpty()){
+        if (code_course.isEmpty()){
+            Toast.makeText(getApplicationContext(),"Enter course code",Toast.LENGTH_SHORT).show();
+        }
+        else if (name_course.isEmpty()){
             Toast.makeText(getApplicationContext(),"Enter course name",Toast.LENGTH_SHORT).show();
         }
         else if(description_course.isEmpty()){
@@ -248,34 +317,36 @@ public class AddCoursesActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Choose course image",Toast.LENGTH_SHORT).show();
         }
         else{
-            course course_object = new course(name_course,description_course,course_photopath+"/"+name_course,selected_department);
+            course course_object = new course(code_course,name_course,description_course,course_photopath+"/"+name_course,selected_department, selected_professor);
             DatabaseReference course_reference = courseref.child(name_course);
             Log.d("MYMESSAGE",course_reference.getKey());
-            if(checkDuplicateEntry(name_course)) {
+            if(checkDuplicateEntry(code_course)) {
                 course_reference.setValue(course_object);
-                uploadlogic(course_photopath , name_course);
+                uploadlogic(course_photopath , code_course);
             }
             else{
-                Toast.makeText(getApplicationContext(),"course with same name in this department already exists",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"course with same code in this department already exists",Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    public void uploadlogic(String path , String coursename)
+    public void uploadlogic(String path , String coursecode)
     {
         File localfile=new File(path);
         final long uploadfilesize = localfile.length();
-        StorageReference filerefoncloud = mainrefstorage.child("/courses/"+course_photopath+"/"+coursename);
+        StorageReference filerefoncloud = mainrefstorage.child("/courses/"+course_photopath+"/"+coursecode);
         UploadTask myuploadtask = filerefoncloud.putFile(Uri.fromFile(localfile));
         myuploadtask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(AddCoursesActivity.this, "New course Added ,Upload DONE !!!!", Toast.LENGTH_SHORT).show();
                 //tv3.setText(taskSnapshot.getMetadata().getReference().getDownloadUrl().toString()+"");
+                edittext_course_code.setText("");
                 edittext_course_name.setText("");
                 edittext_description.setText("");
                 edittext_imagepath.setText("");
                 course_photopath="";
+
                 //fetchCoursesFromFirebase(selected_department);
             }
         });
@@ -364,7 +435,7 @@ public class AddCoursesActivity extends AppCompatActivity {
                                     for (DataSnapshot singleSnapshot: dataSnapshot.getChildren()) {
                                         singleSnapshot.getRef().removeValue();
                                         deletefile(d.path);
-                                        fetchCoursesFromFirebase(selected_department);
+                                        fetchCoursesFromFirebase(selected_department,selected_professor);
                                     }
                                 }
                                 @Override

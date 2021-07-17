@@ -19,6 +19,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </Spinner>
+        <Spinner
+            android:id="@+id/spinnerprofessor"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </Spinner>
 
         <TextView
             android:gravity="center"
@@ -27,31 +34,26 @@
             android:text="Add New Course"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="Enter Name"
+        <EditText
+            android:hint="enter course code"
+            android:id="@+id/edittext_course_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <EditText
             android:hint="enter course name"
             android:id="@+id/edittext_course_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:text="Enter description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
         <EditText
+            android:hint="enter description"
             android:id="@+id/edittext_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:text="Image path"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
         <EditText
+            android:hint="image path"
             android:id="@+id/edittext_imagepath"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -83,7 +85,7 @@
         <ListView
             android:id="@+id/listview_courses"
             android:layout_width="match_parent"
-            android:layout_height="350dp"></ListView>
+            android:layout_height="300dp"></ListView>
 
 
     </LinearLayout>
