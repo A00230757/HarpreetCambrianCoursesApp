@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 public class MainInterface extends AppCompatActivity {
 
-    ImageView imv1, imv2, imv3;
+    ImageView imv1, imv2, imv3, imv4;
 
     int a[] = {R.drawable.admin, R.drawable.professor, R.drawable.student};
     @Override
@@ -21,9 +21,11 @@ public class MainInterface extends AppCompatActivity {
         imv1 = (ImageView) (findViewById(R.id.imv1));
         imv2 = (ImageView) (findViewById(R.id.imv2));
         imv3 = (ImageView) (findViewById(R.id.imv3));
+        imv4 = (ImageView) (findViewById(R.id.imv4));
         imv1.setImageResource(a[0]);
         imv2.setImageResource(a[1]);
         imv3.setImageResource(a[2]);
+        imv4.setImageResource(a[2]);
     }
     public void login(View v ) {
         if( v.getId() == R.id.imv1){
@@ -41,8 +43,12 @@ public class MainInterface extends AppCompatActivity {
             Intent in =new Intent(this,AddProfessorActivity.class);
             startActivity(in);
         }
+        else if( v.getId() == R.id.imv4){
+            Toast.makeText(getApplicationContext(),"Add Student",Toast.LENGTH_SHORT).show();
+            Intent in =new Intent(this,AddStudentActivity.class);
+            startActivity(in);
+        }
         else{}
-
     }
 }
 

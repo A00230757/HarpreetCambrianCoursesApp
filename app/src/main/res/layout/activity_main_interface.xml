@@ -1,61 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:id="@+id/activity_main_interface"
-    android:layout_margin="50px"
-    android:background="#ffccff"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:text="ADMIN LOGIN"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <!-- Here you put the rest of your current view-->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:id="@+id/activity_main_interface"
+        android:layout_margin="50px"
+        android:background="#ffccff"
         android:layout_width="match_parent"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:layout_marginTop="10px"
-        android:gravity="center_horizontal"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv1" />
-    <ImageView
-        android:src="@drawable/admin"
-        android:id="@+id/imv1"
-        android:onClick="login"
-        android:scaleType="fitXY"
-        android:layout_margin="5px"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
-    <TextView
-        android:text=" PROFESSOR LOGIN"
-        android:layout_width="match_parent"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:layout_marginTop="10px"
-        android:gravity="center_horizontal"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv2" />
-    <ImageView
-        android:id="@+id/imv2"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:onClick="login"
-        android:layout_margin="5px"
-        android:scaleType="fitXY"
-        android:src="@drawable/professor" />
-    <TextView
-        android:text="STUDENT LOGIN"
-        android:layout_width="match_parent"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:layout_marginTop="20px"
-        android:gravity="center_horizontal"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv3" />
-    <ImageView
-        android:id="@+id/imv3"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:onClick="login"
-        android:layout_margin="5px"
-        android:scaleType="fitXY"
-        android:src="@drawable/student" />
-</LinearLayout>
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="ADD Department"
+            android:layout_width="match_parent"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:layout_marginTop="10px"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv1" />
+        <ImageView
+            android:src="@drawable/admin"
+            android:id="@+id/imv1"
+            android:onClick="login"
+            android:scaleType="fitXY"
+            android:layout_margin="5px"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+        <TextView
+            android:text=" Add Course"
+            android:layout_width="match_parent"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:layout_marginTop="10px"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv2" />
+        <ImageView
+            android:id="@+id/imv2"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:onClick="login"
+            android:layout_margin="5px"
+            android:scaleType="fitXY"
+            android:src="@drawable/professor" />
+        <TextView
+            android:text="Add Professor"
+            android:layout_width="match_parent"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:layout_marginTop="20px"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv3" />
+        <ImageView
+            android:id="@+id/imv3"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:onClick="login"
+            android:layout_margin="5px"
+            android:scaleType="fitXY"
+            android:src="@drawable/student" />
+        <TextView
+            android:text="ADD Student"
+            android:layout_width="match_parent"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:layout_marginTop="20px"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv4" />
+        <ImageView
+            android:id="@+id/imv4"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:onClick="login"
+            android:layout_margin="5px"
+            android:scaleType="fitXY"
+            android:src="@drawable/student" />
+    </LinearLayout>
+</ScrollView>
