@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="ADMIN LOGIN"
+            android:text="Enter Admin ID"
             android:layout_width="match_parent"
             android:textColor="@color/black"
             android:textSize="20dp"
@@ -21,16 +21,14 @@
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:id="@+id/tv1" />
-        <ImageView
-            android:src="@drawable/admin"
-            android:id="@+id/imv1"
-            android:onClick="login"
-            android:scaleType="fitXY"
-            android:layout_margin="5px"
+        <EditText
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="wrap_content"
+            android:hint="Enter ID"
+            android:id="@+id/edittextadminid"
+            />
         <TextView
-            android:text="STUDENT LOGIN"
+            android:text="Enter Admin Password"
             android:layout_width="match_parent"
             android:textColor="@color/black"
             android:textSize="20dp"
@@ -38,14 +36,19 @@
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:id="@+id/tv2" />
-        <ImageView
-            android:id="@+id/imv2"
+        <EditText
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter Admin Password"
+            android:id="@+id/edittextadminpassword"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="LOGIN"
             android:onClick="login"
-            android:layout_margin="5px"
-            android:scaleType="fitXY"
-            android:src="@drawable/student" />
+            />
 
     </LinearLayout>
 </ScrollView>

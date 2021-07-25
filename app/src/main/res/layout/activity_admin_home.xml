@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="ADMIN LOGIN"
+            android:text="ADD Department"
             android:layout_width="match_parent"
             android:textColor="@color/black"
             android:textSize="20dp"
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp" />
         <TextView
-            android:text="STUDENT LOGIN"
+            android:text=" Add Course"
             android:layout_width="match_parent"
             android:textColor="@color/black"
             android:textSize="20dp"
@@ -45,7 +45,40 @@
             android:onClick="login"
             android:layout_margin="5px"
             android:scaleType="fitXY"
+            android:src="@drawable/professor" />
+        <TextView
+            android:text="Add Professor"
+            android:layout_width="match_parent"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:layout_marginTop="20px"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv3" />
+        <ImageView
+            android:id="@+id/imv3"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:onClick="login"
+            android:layout_margin="5px"
+            android:scaleType="fitXY"
             android:src="@drawable/student" />
-
+        <TextView
+            android:text="ADD Student"
+            android:layout_width="match_parent"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:layout_marginTop="20px"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv4" />
+        <ImageView
+            android:id="@+id/imv4"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:onClick="login"
+            android:layout_margin="5px"
+            android:scaleType="fitXY"
+            android:src="@drawable/student" />
     </LinearLayout>
 </ScrollView>
