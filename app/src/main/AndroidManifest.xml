@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HarpreetCambrianCoursesApp">
-        <activity android:name=".StudentHomeActivity"></activity>
+        <activity android:name=".StudentViewSelectedCoursesActivity"></activity>
+        <activity android:name=".StudentSelectNewCoursesActivity" />
+        <activity android:name=".StudentEditProfileActivity" />
+        <activity android:name=".StudentHomeActivity" />
         <activity android:name=".StudentLoginActivity" />
         <activity android:name=".AdminHomeActivity" />
         <activity android:name=".AdminLoginActivity" />
